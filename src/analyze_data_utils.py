@@ -73,7 +73,7 @@ def interpolate_entropy_tdlimit(Sα: np.ndarray, nFermions_array: np.ndarray, i�
     return Sα_inf
 
 
-def optimize_ϵ_toED(numerics:np.ndarray, theory_fnc:callable, theory_args_list:List[Tuple], start_val: float = 1.0, no_dynamic_start_val: bool = False, optim_kwag: Dict = None):
+def optimize_ϵ_toED(numerics: np.ndarray, theory_fnc: callable, theory_args_list: List[Tuple], start_val: float = 1.0, no_dynamic_start_val: bool = False, optim_kwag: Dict = None):
     """Trys to optimize the first parameter of theory_fnc to fit data in numerics for each value
     in numerics. For each value i, numerics[i], use the tuple theory_args_list[i] as *args of
     the theory_fnc."""
@@ -81,15 +81,16 @@ def optimize_ϵ_toED(numerics:np.ndarray, theory_fnc:callable, theory_args_list:
         optim_kwag = dict()
 
     init_start_val = start_val
- 
+
     res = []
-    for numVal, args in zip(tqdm(numerics),theory_args_list):
+    for numVal, args in zip(tqdm(numerics), theory_args_list):
         try:
-            opt_fnc = lambda x,*args :  theory_fnc(x[0],*args)-numVal 
-            res.append(scipy.optimize.root(fun=opt_fnc, x0=[start_val], args=args, options=dict(maxiter=200,disp=False),**optim_kwag))
+            opt_fnc = lambda x, *args:  theory_fnc(x[0], *args)-numVal
+            res.append(scipy.optimize.root(fun=opt_fnc, x0=[
+                       start_val], args=args, options=dict(maxiter=200, disp=False), **optim_kwag))
             if not no_dynamic_start_val:
                 try:
-                    start_val = res[-1].x[0] if 0.5 < res[-1].x[0]  < 2 else init_start_val
+                    start_val = res[-1].x[0] if 0.5 < res[-1].x[0] < 2 else init_start_val
                 except:
                     pass
         except:
@@ -97,71 +98,80 @@ def optimize_ϵ_toED(numerics:np.ndarray, theory_fnc:callable, theory_args_list:
 
     return res
 
-def estimate_tinf_limit_all(quench:QuenchParticleEE,N:int):
+
+def estimate_tinf_limit_all(quench: QuenchParticleEE, N: int):
     nRenyi = np.shape(quench.S)[0]
     nV = np.size(quench.V)
 
-    Sinf = np.zeros((nRenyi,1,nV))
-    Serr = np.zeros((nRenyi,nV))
-    for iV,V in enumerate(quench.V):
+    Sinf = np.zeros((nRenyi, 1, nV))
+    Serr = np.zeros((nRenyi, nV))
+    for iV, V in enumerate(quench.V):
         for iR in range(nRenyi):
-            try: 
-                Sinf[iR,0,iV],Serr[iR,iV] = intinite_t_entropy_and_error_sum(quench.t, np.squeeze(quench("Sind",i=iR,V=iV)) ,N,V,quench.Δt)
-                if np.isnan(Sinf[iR,0,iV]) or np.isnan(Serr[iR,iV]): 
+            try:
+                Sinf[iR, 0, iV], Serr[iR, iV] = intinite_t_entropy_and_error_sum(
+                    quench.t, np.squeeze(quench("Sind", i=iR, V=iV)), N, V, quench.Δt)
+                if np.isnan(Sinf[iR, 0, iV]) or np.isnan(Serr[iR, iV]):
                     raise ValueError("nan value obtained in t->inf estimation")
             except:
-                print(f"Warning for V={V}, iR={iR} error estimation failed.  Use fallback method.")
-                Sinf[iR,0,iV],Serr[iR,iV],_,_ = intinite_t_entropy_and_error(quench.tres(V),np.squeeze(quench("Sind",i=iR,V=iV)),N)
-            
-    quench.S = np.concatenate((quench.S,Sinf),axis=1)
-    quench.t = np.concatenate([quench.t,[np.inf]])
-    quench.Serr = Serr 
+                print(
+                    f"Warning for V={V}, iR={iR} error estimation failed.  Use fallback method.")
+                Sinf[iR, 0, iV], Serr[iR, iV], _, _ = intinite_t_entropy_and_error(
+                    quench.tres(V), np.squeeze(quench("Sind", i=iR, V=iV)), N)
+
+    quench.S = np.concatenate((quench.S, Sinf), axis=1)
+    quench.t = np.concatenate([quench.t, [np.inf]])
+    quench.Serr = Serr
 
     return quench
 
 
-def estimate_tinf_tdlimit_all(quench_N:List[QuenchParticleEE],N_array:List[int],fit_npoints:int=5):
+def estimate_tinf_tdlimit_all(quench_N: List[QuenchParticleEE], N_array: List[int], fit_npoints: int = 5):
     for quench in quench_N:
         if not np.isinf(quench.t[-1]):
-            raise ValueError("Before estimating the thermodynamic limit, the infinite time limit needs to be performed.")
+            raise ValueError(
+                "Before estimating the thermodynamic limit, the infinite time limit needs to be performed.")
     Vs = quench_N[0].V
     nV = np.size(Vs)
-    nR = np.shape(quench_N[0].S)[0] 
+    nR = np.shape(quench_N[0].S)[0]
 
-    Sinf = np.zeros((nR,nV))
-    Serr = np.zeros((nR,nV))
-    
+    Sinf = np.zeros((nR, nV))
+    Serr = np.zeros((nR, nV))
+
     for iR in range(nR):
-        for iV,V  in enumerate(Vs):
+        for iV, V in enumerate(Vs):
             # get N dependence of infinite time limit
-            SinfN = np.array([quench("Sind",i=iR,t=[-1],V=iV)[0] for quench in quench_N])
-            SerrN = np.array([quench("Serrind",i=iR,V=iV) for quench in quench_N])
+            SinfN = np.array([quench("Sind", i=iR, t=[-1], V=iV)[0]
+                              for quench in quench_N])
+            SerrN = np.array([quench("Serrind", i=iR, V=iV)
+                              for quench in quench_N])
             # fit t->inf
             #print(f"V={V}, i={iR}, SinfN={SinfN}")
-            _,Sinf[iR,iV],Serr[iR,iV] = fit_tail_linear(1/N_array,SinfN,npoints=fit_npoints,std_err=SerrN)
-    return Vs,Sinf,Serr
+            _, Sinf[iR, iV], Serr[iR, iV] = fit_tail_linear(
+                1/N_array, SinfN, npoints=fit_npoints, std_err=SerrN)
+    return Vs, Sinf, Serr
 
 
-
-def intinite_t_entropy_and_error_sum(t,EE,N,V,Δt):
-    Einf,Eerr1  = intinite_t_entropy_and_error_1(t,EE,N,V,Δt)
+def intinite_t_entropy_and_error_sum(t, EE, N, V, Δt):
+    Einf, Eerr1 = intinite_t_entropy_and_error_1(t, EE, N, V, Δt)
 
     tres = t*v_a_timeres(V)
-    _, Eerr2, _, _ = intinite_t_entropy_and_error(tres,EE,N)
+    _, Eerr2, _, _ = intinite_t_entropy_and_error(tres, EE, N)
 
     return Einf, Eerr1+Eerr2
 
-def intinite_t_entropy_and_error_1(t,EE,N,V,Δt): 
-    Einf,_ = get_asymptotic_value(t,np.squeeze(EE),N,V,Δt)
-    _,_,Eerr, = binning_error(np.squeeze(EE))
+
+def intinite_t_entropy_and_error_1(t, EE, N, V, Δt):
+    Einf, _ = get_asymptotic_value(t, np.squeeze(EE), N, V, Δt)
+    _, _, Eerr, = binning_error(np.squeeze(EE))
 
     return Einf, Eerr
 
+
 def binning_error(data):
     '''Perform a binning analysis'''
-    
+
     from scipy.signal import find_peaks
-    
+
     # number of possible binning levels
     num_levels = np.int(np.log2(data.shape[0]/4))+1
 
@@ -169,14 +179,14 @@ def binning_error(data):
     Δ = []
     num_bins = []
     binned_data = data
-    
+
     for n in range(num_levels):
-        Δₙ,binned_data = get_binned_error(binned_data)
+        Δₙ, binned_data = get_binned_error(binned_data)
         Δ.append(Δₙ)
-        num_bins.append(2**n) 
-        
+        num_bins.append(2**n)
+
     Δ = np.array(Δ)
-    
+
     # find the maxima which corresponds to the error
     if Δ.ndim == 1:
         plateau = find_peaks(Δ)[0]
@@ -188,39 +198,41 @@ def binning_error(data):
     else:
         num_est = Δ.shape[1]
         binned_error = np.zeros(num_est)
-        
+
         for iest in range(num_est):
-            plateau = find_peaks(Δ[:,iest])[0]
+            plateau = find_peaks(Δ[:, iest])[0]
             if plateau.size > 0:
-                binned_error[iest] = Δ[plateau[0],iest]
+                binned_error[iest] = Δ[plateau[0], iest]
         else:
-            binned_error[iest] = np.max(Δ[:,iest])
+            binned_error[iest] = np.max(Δ[:, iest])
             print('Binning Converge Error: no plateau found')
-            
-    return np.array(num_bins),Δ,binned_error
+
+    return np.array(num_bins), Δ, binned_error
+
 
 def get_binned_error(data):
     '''Get the standard error in mc_data and return neighbor averaged data.'''
     N_bins = data.shape[0]
-    Δ = np.std(data,axis=0)/np.sqrt(N_bins)
-    
+    Δ = np.std(data, axis=0)/np.sqrt(N_bins)
+
     start_bin = N_bins % 2
     binned_data = 0.5*(data[start_bin::2]+data[start_bin+1::2])
-    
-    return Δ,binned_data
 
-def get_asymptotic_value(t,EE,N,Vf,Δt):
-    
+    return Δ, binned_data
+
+
+def get_asymptotic_value(t, EE, N, Vf, Δt):
+
     # get the index where we start the average
-    idx = np.argmin(np.abs(t*v_a_timeres(Vf)-0.5*N)) 
-    
+    idx = np.argmin(np.abs(t*v_a_timeres(Vf)-0.5*N))
+
     # find out how many data points we have in total to average
     num_times = len(t)
-    
+
     # break into M pieces
     M = 4
     width = int(num_times/M)
-    norm = 1#2/N
+    norm = 1  # 2/N
     asymp = []
     for i in range(M):
         start = idx + width*i
@@ -228,12 +240,13 @@ def get_asymptotic_value(t,EE,N,Vf,Δt):
         if i == M-1:
             end = len(t)
         asymp.append(np.average(EE[start:end])*norm)
-    
-    asymp = np.array(asymp)
-    
-    return np.average(asymp),np.std(asymp)/np.sqrt(M)
 
-def intinite_t_entropy_and_error(tres,EE,N):
+    asymp = np.array(asymp)
+
+    return np.average(asymp), np.std(asymp)/np.sqrt(M)
+
+
+def intinite_t_entropy_and_error(tres, EE, N):
     """
     Obtain the infinite time limit and error.
     Input:
@@ -252,19 +265,52 @@ def intinite_t_entropy_and_error(tres,EE,N):
 
     # obtain infinite limit from mean
     Einf = np.mean(y)
-    # obtain error by computing mean over every period of size N individually 
+    # obtain error by computing mean over every period of size N individually
     peak_dist = np.argmin(np.abs(N-(x-x[0])))
     try:
-        peak_idx = find_peaks(y,distance=peak_dist)[0] 
+        peak_idx = find_peaks(y, distance=peak_dist)[0]
     except ValueError as e:
-        print("Warning: ",e)
-        peak_idx = find_peaks(y)[0] 
+        print("Warning: ", e)
+        peak_idx = find_peaks(y)[0]
     # means Mi over each bin
-    Mi = [np.mean(y[i_sta:i_end]) for i_sta,i_end in zip(peak_idx[:-1],peak_idx[1:])]
+    Mi = [np.mean(y[i_sta:i_end])
+          for i_sta, i_end in zip(peak_idx[:-1], peak_idx[1:])]
     # get mean of all bins and std
     N_bins = np.size(Mi)
     M_bins = np.mean(Mi)
     Std_bins = np.std(Mi)
 
     return Einf, Std_bins/np.sqrt(N_bins) + np.abs(Einf-M_bins), Mi, x
- 
+
+
+def obdbs(obdm, N, L):
+    """ Return the time-dependent spectra of the OBDM"""
+    for ti in range(0, len(obdm[0, :])):
+        λ = np.zeros(L)
+        if (N % 2 == 1):
+            for q in range(0, N):
+                for i in range(0, L):
+                    λ[N-1-q] += obdm[i, ti]*np.cos((q+(1-N % 2)/2)*i*np.pi*2/L)
+                if (0 < q < N):
+                    λ[N+q-1] = λ[N-1-q]
+            for i in range(0, L):
+                λ[L-1] += obdm[i, ti]*np.cos((N+(1-N % 2)/2)*i*np.pi*2/L)
+        else:
+            for q in range(0, N):
+                for i in range(0, L):
+                    λ[N-1-q] += obdm[i, ti]*np.cos((q+(1-N % 2)/2)*i*np.pi*2/L)
+                λ[N+q] = λ[N-1-q]
+        obdm[:, ti] = λ[:]
+    return obdm
+
+
+def spectra(obdm, start=0):
+    """Return the time-average λ of the spectra and its std σ"""
+    L = len(obdm[:, 0])
+    TP = len(obdm[0, :])  # number of time points
+    λ = np.zeros(L)
+    σ = np.zeros(L)
+    for i in range(L):
+        λ[i] = np.sum(obdm[i, start:])/(TP-start)
+        σ[i] = obdm[i, start:].std()
+    return λ, σ
