@@ -8,10 +8,10 @@ Matthias Thamm, Harini Radhakrishnan, Hatem Barghathi, Bernd Rosenow, and Adrian
 [arXiv:XXXX.YYYYY](https://arxiv.org/abs/XXXX.YYYYY)
 
 ### Abstract
-Abstract Here
+We study the one-particle entanglement entropy of spinless interacting fermions in the Tomonaga-Luttinger liquid regime, both at equilibrium and after an interaction quantum quench. Using both large scale exact diagonalization and time-dependent density matrix renormalization group calculations, we numerically compute the one-body reduced density matrix for the J-V model and its time evolution  at large system sizes.  We study both the growth of the entanglement entropy after the quench and 	the interaction dependence of its steady state value, and use finite size scaling of the numerical data for large system sizes to extrapolate to the thermodynamic limit. To compare these numerical results  with analytic results obtained through bosonization of the fermionic fields,  we determine the value of an interaction cutoff such that numerical results for the entanglement entropy in equilibrium are reproduced. We then find excellent agreement between numerical and field  theoretical results as long as the quench does not approach the quantum liquid phase boundaries.
 
 ### Description
-This repository includes links, code, scripts, and data to generate the figures in a paper.
+This repository includes links, code, scripts, and data to generate the figures in the paper.
 
 ### Requirements
 The data in this project was generated via exact diagonalization and dmrg.  
@@ -69,7 +69,7 @@ grant RO 2247/11-1. The creation of these materials was supported in part by the
 <img src="https://github.com/DelMaestroGroup/papers-code-OneParticleEntanglementEntropy/blob/main/figures/013_fittedCutoff_quench_pow1.svg" width="400px"> 
 
 #### Figure 14: Time evolution of distribution function
-<img src="https://github.com/DelMaestroGroup/papers-code-OneParticleEntanglementEntropy/blob/main/figures/014_obdmTimeEvolution.svg" width="400px"> 
+<img src="https://github.com/DelMaestroGroup/papers-code-OneParticleEntanglementEntropy/blob/main/figures/014_obdmTimeEvolution.svg" width="700px"> 
 
 #### Figure 15: Comparison time average of distribution function and equilibrium case
 <img src="https://github.com/DelMaestroGroup/papers-code-OneParticleEntanglementEntropy/blob/main/figures/015_time_average_obdm.svg" width="400px"> 
