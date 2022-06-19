@@ -1,5 +1,5 @@
 [![Paper](https://img.shields.io/badge/paper-arXiv%3AXXXX.YYYYY-B31B1B.svg)](https://arxiv.org/abs/XXXX.YYYYY)
-[![DOI](https://zenodo.org/badge/214220909.svg)](https://zenodo.org/badge/latestdoi/214220909)
+[![DOI](https://zenodo.org/badge/XXXYYYZZZ.svg)](https://zenodo.org/badge/latestdoi/XXXYYYZZZ)
 
 # One-particle entanglement for one dimensional spinless fermions after an interaction quantum quench
 
