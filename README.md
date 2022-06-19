@@ -25,7 +25,7 @@ Everything included in the [data](https://github.com/DelMaestroGroup/papers-code
 M.T. and B.R. acknowledge funding by the Deutsche Forschungsgemeinschaft (DFG) under Grant No. 406116891 within the Research Training Group RTG 2522/1 and under 
 grant RO 2247/11-1. The creation of these materials was supported in part by the NSF under Grant No. DMR-2041995. 
 
-[<img width="100px" src="https://www.nsf.gov/images/logos/NSF_4-Color_bitmap_Logo.png">](http://www.nsf.gov/awardsearch/showAward?AWD_ID=1553991)
+[<img width="100px" src="https://www.nsf.gov/images/logos/NSF_4-Color_bitmap_Logo.png">](http://www.nsf.gov/awardsearch/showAward?AWD_ID=2041995)
 
 ### Figures
 
