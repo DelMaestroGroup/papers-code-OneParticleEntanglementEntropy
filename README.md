@@ -15,7 +15,7 @@ This repository includes links, code, scripts, and data to generate the figures 
 
 ### Requirements
 The data in this project was generated via exact diagonalization and dmrg.  
-Everything included in the [data](https://github.com/DelMaestroGroup/papers-code-OneParticleEntanglementEntropy/tree/main/data)) directory was generated via:
+Everything included in the [data](https://github.com/DelMaestroGroup/papers-code-OneParticleEntanglementEntropy/tree/main/data) directory was generated via:
 
 * [ED equilibrium code](https://github.com/DelMaestroGroup/tVDiagonalizeParticleEntanglementEntropyEquilibrium)
 * [ED quench code](https://github.com/DelMaestroGroup/tVDiagonalizeParticleEntanglementEntropyQuench)
