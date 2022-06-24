@@ -1,4 +1,4 @@
-[![Paper](https://img.shields.io/badge/paper-arXiv%3AXXXX.YYYYY-B31B1B.svg)](https://arxiv.org/abs/XXXX.YYYYY)
+[![Paper](https://img.shields.io/badge/paper-arXiv%32206.11301-B31B1B.svg)](https://arxiv.org/abs/2206.11301)
 [![DOI](https://zenodo.org/badge/504429972.svg)](https://zenodo.org/badge/latestdoi/504429972)
 
 
@@ -6,10 +6,10 @@
 
 Matthias Thamm, Harini Radhakrishnan, Hatem Barghathi, Bernd Rosenow, and Adrian Del Maestro
 
-[arXiv:XXXX.YYYYY](https://arxiv.org/abs/XXXX.YYYYY)
+[arXiv:2206.11301](https://arxiv.org/abs/2206.11301)
 
 ### Abstract
-Particle entanglement provides information on quantum correlations in systems of indistinguishable particles. Here, we study the one particle entanglement entropy for an integrable model of spinless, interacting fermions both at equilibrium and after an interaction quantum quench. Using both large scale exact diagonalization and time dependent density matrix renormalization group calculations, we numerically compute the one body reduced density matrix for the $J$-$V$ model, as well as its post-quench dynamics.  We include an analysis of the fermionic momentum distribution, showcasing how the ground state is imprinted on its time evolution after a quantum quench. Our numerical results, extrapolated to the thermodynamic limit, can be compared with field theoretic bosonization in the Tomonaga-Luttinger liquid regime. Excellent agreement is obtained using an interaction cutoff that can be determined uniquely in the ground state. 
+Particle entanglement provides information on quantum correlations in systems of indistinguishable particles. Here, we study the one particle entanglement entropy for an integrable model of spinless, interacting fermions both at equilibrium and after an interaction quantum quench. Using both large scale exact diagonalization and time dependent density matrix renormalization group calculations, we numerically compute the one body reduced density matrix for the $J$-$V$ model, as well as its post-quench dynamics.  We include an analysis of the fermionic momentum distribution, showcasing its time evolution after a quantum quench. Our numerical results, extrapolated to the thermodynamic limit, can be compared with field theoretic bosonization in the Tomonaga-Luttinger liquid regime. Excellent agreement is obtained using an interaction cutoff that can be determined uniquely in the ground state. 
 
 ### Description
 This repository includes links, code, scripts, and data to generate the figures in the paper.
